@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <body>
+    <section>
+        <header class="Registration_Box">
+            <div class="Input-group">
+                <label for="username">username</label>
+                <input type="text" id="username" placeholder="Enter username">
+                <span class="error-text">Username is required</span>
+            </div>
+
+            <div class="Input-group">
+                <label for="Email">Email</label>
+                <input type="text" id="Email" placeholder="Enter Email">
+                <span class="error-text">Email is required</span>
+            </div>
+
+            <div class="Input-group">
+                <label for="Website">Website</label>
+                <input type="text" id="Website" placeholder="Enter Website">
+                <span class="error-text">Please fill the Website</span>
+            </div>
+
+            <div class="Input-group">
+                <label for="Password">Password</label>
+                <input type="password" id="Password" placeholder="Enter Password">
+                <span class="error-text">Please fill the Password</span>
+            </div>
+
+            <div class="Input-group">
+                <label for="Repeat Password">Repeat Password</label>
+                <input type="password" id="Repeat Password" placeholder="Confirm Password">
+                <span class="error-text">Please confirm your Password</span>
+            </div>
+
+            <div class="checkbox-group">
+                <div class="checkbox-row">
+                    <label for="agree">Agree the <a href="#">condition</a></label>
+                    <input type="checkbox" id="agree">
+                </div>
+            </div>
+
+            <button type="submit" class="register-btn">Register</button>
+        </header> 
+    </section>
+
+    <script>
+    const registerBtn = document.querySelector('.register-btn');
+
+    registerBtn.addEventListener('click', function(event) {
+        const password = document.getElementById('Password');
+        const repeatPassword = document.getElementById('Repeat Password');
+        
+        // This is a "Regular Expression" that looks for any symbol
+        const symbolFormat = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+        
+        let hasError = false;
+
+        // --- CHECK 1: ALL BOXES EMPTY ---
+        const groups = document.querySelectorAll('.Input-group');
+        groups.forEach(group => {
+            const input = group.querySelector('input');
+            const errorSpan = group.querySelector('.error-text');
+            
+            if (input.value.trim() === "") {
+                input.classList.add('input-error');
+                if (errorSpan) errorSpan.style.display = 'block';
+                hasError = true;
+            } else {
+                input.classList.remove('input-error');
+                if (errorSpan) errorSpan.style.display = 'none';
+            }
+        });
+
+        // --- CHECK 2: SYMBOL IN PASSWORD ---
+        // If the password doesn't have a symbol, turn it red
+        if (!symbolFormat.test(password.value)) {
+            password.classList.add('input-error');
+            const passError = password.parentElement.querySelector('.error-text');
+            if (passError) {
+                passError.innerText = "Password must include a symbol ($, @, &, etc.)";
+                passError.style.display = 'block';
+            }
+            hasError = true;
+        }
+
+        // --- CHECK 3: PASSWORDS MUST MATCH ---
+        if (password.value !== repeatPassword.value) {
+            repeatPassword.classList.add('input-error');
+            const repeatError = repeatPassword.parentElement.querySelector('.error-text');
+            if (repeatError) {
+                repeatError.innerText = "Passwords do not match!";
+                repeatError.style.display = 'block';
+            }
+            hasError = true;
+        }
+
+        if (hasError) {
+            event.preventDefault(); // Stop the form if anything is wrong
+        } else {
+            alert("Registration Successful!");
+        }
+    });
+</script>
+</body>
+</body>
+</html>
